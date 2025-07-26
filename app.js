@@ -1,6 +1,17 @@
+
+
 const express = require('express');
+const cors = require('cors');
 const dotenv = require('dotenv');
 const sequelize = require('./config/database');
+
+dotenv.config();
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+// ...el resto de tu código...
 
 // Rutas
 const donadorRoutes = require('./routes/donadorRoutes');
@@ -9,10 +20,6 @@ const donacionRoutes = require('./routes/donacionRoutes');
 const mensajeRoutes = require('./routes/mensajeRoutes');
 const adminRoutes = require('./routes/adminRoutes'); // Importamos administrador
 
-dotenv.config();
-
-const app = express();
-app.use(express.json());
 
 // Endpoint de prueba
 app.get('/', (req, res) => {
