@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Donación de Sangre - Login</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/forms.css">
+    <link rel="stylesheet" href="css/tables.css">
+    <link rel="stylesheet" href="css/modal.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="logo">
+                    <span class="logo-icon">🩸</span>
+                    <h1>Sistema de Donación</h1>
+                </div>
+                <p>Inicia sesión para continuar</p>
+            </div>
+            
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="email">Correo Electrónico</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="userType">Tipo de Usuario</label>
+                    <select id="userType" name="userType" required>
+                        <option value="">Seleccionar...</option>
+                        <option value="admin">Administrador</option>
+                        <option value="donador">Donador</option>
+                        <option value="receptor">Receptor</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-full">Iniciar Sesión</button>
+            </form>
+            
+            <div class="login-footer">
+                <p>¿No tienes cuenta? <a href="#" onclick="showRegister()">Regístrate aquí</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Screen -->
+    <div id="registerScreen" class="login-container" style="display: none;">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="logo">
+                    <span class="logo-icon">🩸</span>
+                    <h1>Registro de Usuario</h1>
+                </div>
+                <p>Crea tu cuenta para comenzar</p>
+            </div>
+            
+            <form id="registerForm" class="login-form">
+                <div class="form-group">
+                    <label for="regUserType">Tipo de Usuario</label>
+                    <select id="regUserType" name="userType" required onchange="showUserFields()">
+                        <option value="">Seleccionar...</option>
+                        <option value="donador">Donador</option>
+                        <option value="receptor">Receptor</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="regName">Nombre Completo</label>
+                    <input type="text" id="regName" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="regEmail">Correo Electrónico</label>
+                    <input type="email" id="regEmail" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="regPassword">Contraseña</label>
+                    <input type="password" id="regPassword" name="password" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="regPhone">Teléfono</label>
+                    <input type="tel" id="regPhone" name="phone" required>
+                </div>
+                
+                <!-- Campos específicos para donadores -->
+                <div id="donadorFields" style="display: none;">
+                    <div class="form-group">
+                        <label for="regBloodType">Tipo de Sangre</label>
+                        <select id="regBloodType" name="bloodType">
+                            <option value="">Seleccionar...</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="regLocation">Ubicación</label>
+                        <input type="text" id="regLocation" name="location" placeholder="Ciudad, Estado">
+                    </div>
+                </div>
+                
+                <!-- Campos específicos para receptores -->
+                <div id="receptorFields" style="display: none;">
+                    <div class="form-group">
+                        <label for="regHospital">Hospital</label>
+                        <input type="text" id="regHospital" name="hospital" placeholder="Nombre del hospital">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="regUrgency">Nivel de Urgencia</label>
+                        <select id="regUrgency" name="urgency">
+                            <option value="false">Normal</option>
+                            <option value="true">Urgente</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-full">Registrarse</button>
+            </form>
+            
+            <div class="login-footer">
+                <p>¿Ya tienes cuenta? <a href="#" onclick="showLogin()">Inicia sesión aquí</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="mainApp" class="app-container" style="display: none;">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-brand">
+                <span class="logo-icon">🩸</span>
+                <span class="brand-text">Sistema de Donación</span>
+            </div>
+            
+            <div class="nav-menu">
+                <a href="#" class="nav-link active" onclick="showView('dashboard')">🏠 Dashboard</a>
+                <a href="#" class="nav-link" onclick="showView('donadores')">👥 Donadores</a>
+                <a href="#" class="nav-link" onclick="showView('receptores')">🏥 Receptores</a>
+                <a href="#" class="nav-link" onclick="showView('donaciones')">🩸 Donaciones</a>
+                <a href="#" class="nav-link" onclick="showView('mensajes')">💬 Mensajes</a>
+                <a href="#" class="nav-link" id="adminLink" style="display: none;" onclick="showView('admin')">👨‍💼 Admin</a>
+            </div>
+            
+            <div class="nav-user">
+                <span id="userName">Usuario</span>
+                <button class="btn btn-secondary btn-sm" onclick="logout()">Cerrar Sesión</button>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard View -->
+            <div id="dashboardView" class="view active">
+                <div class="view-header">
+                    <h1>Dashboard</h1>
+                    <p>Bienvenido al Sistema de Donación de Sangre</p>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-number" id="totalDonadores">0</div>
+                        <div class="stat-label">Donadores Registrados</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">🏥</div>
+                        <div class="stat-number" id="totalReceptores">0</div>
+                        <div class="stat-label">Receptores Activos</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">🩸</div>
+                        <div class="stat-number" id="totalDonaciones">0</div>
+                        <div class="stat-label">Donaciones Realizadas</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">🚨</div>
+                        <div class="stat-number" id="urgentes">0</div>
+                        <div class="stat-label">Casos Urgentes</div>
+                    </div>
+                </div>
+                
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <h3>Últimas Donaciones</h3>
+                        <div id="recentDonations" class="list-container"></div>
+                    </div>
+                    
+                    <div class="dashboard-card">
+                        <h3>Casos Urgentes</h3>
+                        <div id="urgentCases" class="list-container"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Donadores View -->
+            <div id="donadoresView" class="view">
+                <div class="view-header">
+                    <h1>Gestión de Donadores</h1>
+                    <button class="btn btn-primary" onclick="openModal('donador')">➕ Nuevo Donador</button>
+                </div>
+                
+                <div class="view-tools">
+                    <input type="text" class="search-box" placeholder="Buscar donadores..." onkeyup="filterTable('donadoresTable', this.value)">
+                    <select class="filter-select" onchange="filterByBloodType(this.value)">
+                        <option value="">Todos los tipos de sangre</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                    </select>
+                </div>
+                
+                <div id="donadoresTable" class="table-container"></div>
+            </div>
+
+            <!-- Receptores View -->
+            <div id="receptoresView" class="view">
+                <div class="view-header">
+                    <h1>Gestión de Receptores</h1>
+                    <button class="btn btn-primary" onclick="openModal('receptor')">➕ Nuevo Receptor</button>
+                </div>
+                
+                <div class="view-tools">
+                    <input type="text" class="search-box" placeholder="Buscar receptores..." onkeyup="filterTable('receptoresTable', this.value)">
+                    <select class="filter-select" onchange="filterByUrgency(this.value)">
+                        <option value="">Todos los casos</option>
+                        <option value="true">Solo urgentes</option>
+                        <option value="false">Solo normales</option>
+                    </select>
+                </div>
+                
+                <div id="receptoresTable" class="table-container"></div>
+            </div>
+
+            <!-- Donaciones View -->
+            <div id="donacionesView" class="view">
+                <div class="view-header">
+                    <h1>Gestión de Donaciones</h1>
+                    <button class="btn btn-primary" onclick="openModal('donacion')">➕ Nueva Donación</button>
+                </div>
+                
+                <div class="view-tools">
+                    <input type="text" class="search-box" placeholder="Buscar donaciones..." onkeyup="filterTable('donacionesTable', this.value)">
+                    <select class="filter-select" onchange="filterByStatus(this.value)">
+                        <option value="">Todos los estados</option>
+                        <option value="Pendiente">Pendiente</option>
+                        <option value="En Proceso">En Proceso</option>
+                        <option value="Completada">Completada</option>
+                        <option value="Cancelada">Cancelada</option>
+                    </select>
+                </div>
+                
+                <div id="donacionesTable" class="table-container"></div>
+            </div>
+
+            <!-- Mensajes View -->
+            <div id="mensajesView" class="view">
+                <div class="view-header">
+                    <h1>Sistema de Mensajes</h1>
+                    <button class="btn btn-primary" onclick="openModal('mensaje')">✉️ Nuevo Mensaje</button>
+                </div>
+                
+                <div class="messages-container">
+                    <div class="messages-sidebar">
+                        <div class="messages-header">
+                            <h3>Conversaciones</h3>
+                        </div>
+                        <div id="conversationsList" class="conversations-list"></div>
+                    </div>
+                    
+                    <div class="messages-main">
+                        <div id="messagesList" class="messages-list">
+                            <div class="no-messages">
+                                <p>Selecciona una conversación para ver los mensajes</p>
+                            </div>
+                        </div>
+                        
+                        <div id="messageComposer" class="message-composer" style="display: none;">
+                            <textarea id="messageText" placeholder="Escribe tu mensaje..."></textarea>
+                            <button class="btn btn-primary" onclick="sendMessage()">Enviar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin View -->
+            <div id="adminView" class="view">
+                <div class="view-header">
+                    <h1>Panel de Administración</h1>
+                </div>
+                
+                <div class="admin-grid">
+                    <div class="admin-card">
+                        <h3>Gestión de Administradores</h3>
+                        <button class="btn btn-primary" onclick="openModal('administrador')">➕ Nuevo Admin</button>
+                        <div id="administradoresTable" class="table-container"></div>
+                    </div>
+                    
+                    <div class="admin-card">
+                        <h3>Estadísticas del Sistema</h3>
+                        <div class="admin-stats">
+                            <div class="admin-stat">
+                                <span class="stat-label">Usuarios Totales:</span>
+                                <span class="stat-value" id="totalUsers">0</span>
+                            </div>
+                            <div class="admin-stat">
+                                <span class="stat-label">Donaciones Hoy:</span>
+                                <span class="stat-value" id="donationsToday">0</span>
+                            </div>
+                            <div class="admin-stat">
+                                <span class="stat-label">Casos Urgentes:</span>
+                                <span class="stat-value" id="urgentCasesCount">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Nuevo Registro</h3>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div id="modalBody">
+                <!-- El contenido del formulario se insertará dinámicamente -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/donadores.js"></script>
+    <script src="js/receptores.js"></script>
+    <script src="js/donaciones.js"></script>
+    <script src="js/mensajes.js"></script>
+    <script src="js/admin.js"></script>
+    <script src="js/modal.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html> 
